@@ -83,6 +83,8 @@ export const useAuthService = () => {
   }
 
   const restoreSession = async () => {
+    if (!hasAuth.value) return null
+
     if (restorePromise) return restorePromise
 
     restorePromise = (async () => {
@@ -95,6 +97,8 @@ export const useAuthService = () => {
         restorePromise = null
       }
     })()
+
+    return restorePromise
   }
 
   return { login, refreshToken, restoreSession }

@@ -34,7 +34,7 @@ const router = createRouter({
 const protectedRoutes = ['/', '/home']
 
 router.beforeEach(async (to, _, next) => {
-  // await restoreSession(true)
+  await restoreSession()
 
   const userAuth = isAuth.value
 
