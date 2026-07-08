@@ -63,8 +63,8 @@ api.interceptors.response.use(
         originalRequest._retry = true
 
         try {
-          const newToken = await refreshToken()
-          originalRequest.headers.Authorization = `Bearer ${newToken}`
+          await refreshToken()
+          originalRequest.headers.Authorization = `Bearer ${accessToken.value}`
           return api(originalRequest)
         } catch (refreshError) {
           return Promise.reject(refreshError)

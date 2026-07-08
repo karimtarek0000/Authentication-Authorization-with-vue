@@ -57,8 +57,6 @@ export const useAuthService = () => {
       try {
         const { data } = await axios.post(REFRESH_TOKEN, {}, { withCredentials: true })
         accessToken.value = data.accessToken
-
-        return data.accessToken
       } catch (error) {
         initialData()
         router.replace('/login')
@@ -84,24 +82,19 @@ export const useAuthService = () => {
     }
   }
 
-  const restoreSession = async (userData: boolean = false) => {
+  const restoreSession = async () => {
     if (restorePromise) return restorePromise
 
-    try {
-      restorePromise = (async () => {
-        const token = await refreshToken()
-        // userData && (await restoreUserInfo())
-
-        return token
-      })()
-
-      return restorePromise
-    } catch (error) {
-      restorePromise = null
-      return handleError(error as AxiosError)
-    }
-
-    restorePromise = (async () => {})()
+    restorePromise = (async () => {
+      try {
+        await refreshToken()
+        await restoreUserInfo()
+      } catch (error) {
+        return handleError(error as AxiosError)
+      } finally {
+        restorePromise = null
+      }
+    })()
   }
 
   return { login, refreshToken, restoreSession }
