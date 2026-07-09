@@ -1,12 +1,12 @@
-import { checkPermissions, restoreSession, userAuth } from '@/auth'
+import { aboutLoader, restoreSession, testLoader, userAuth } from '@/auth'
 import AboutPage from '@/pages/AboutPage.vue'
 import HomePage from '@/pages/HomePage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
 import SignupPage from '@/pages/SignupPage.vue'
 import TestPage from '@/pages/TestPage.vue'
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
-const routes = [
+const routes: RouteRecordRaw[] = [
   {
     path: '/',
     redirect: '/home',
@@ -20,22 +20,13 @@ const routes = [
     path: '/about',
     name: 'about',
     component: AboutPage,
+    beforeEnter: aboutLoader,
   },
   {
     path: '/test',
     name: 'test',
     component: TestPage,
-    beforeEnter: async (to, from, next) => {
-      const hasPermissions = checkPermissions(userAuth.permissions, {
-        permission: 'edit_testing',
-      })
-
-      if (!hasPermissions) {
-        next('/')
-      }
-
-      next()
-    },
+    beforeEnter: testLoader,
   },
   {
     path: '/login',
@@ -54,7 +45,7 @@ const router = createRouter({
   routes,
 })
 
-const publicRoutes = ['/about', '/login']
+const publicRoutes = ['/login']
 
 router.beforeEach(async (to, _, next) => {
   await restoreSession()
