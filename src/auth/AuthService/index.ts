@@ -1,22 +1,8 @@
-import { api, handleError, LOGIN, PROFILE, REFRESH_TOKEN, type Permission } from '@/auth'
+import { api, handleError, LOGIN, PROFILE, REFRESH_TOKEN, type IUserAuth, type Login } from '@/auth'
 import router from '@/router'
 import type { AxiosError } from 'axios'
 import axios from 'axios'
 import { reactive } from 'vue'
-
-interface Login {
-  email: string
-  password: string
-}
-
-interface IUserAuth {
-  accessToken: string
-  userInfo: { id: string; name: string; email: string }
-  permissions: Permission[]
-  role: string
-  isAuth: boolean
-  hasAuth: string | null
-}
 
 const initialData = {
   accessToken: '',

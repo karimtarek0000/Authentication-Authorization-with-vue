@@ -1,4 +1,21 @@
 // ========================================= //
+// ============= AUTH_SERVICE =============== //
+// ========================================= //
+export interface Login {
+  email: string
+  password: string
+}
+
+export interface IUserAuth {
+  accessToken: string
+  userInfo: { id: string; name: string; email: string }
+  permissions: Permission[]
+  role: string
+  isAuth: boolean
+  hasAuth: string | null
+}
+
+// ========================================= //
 // ============= PERMISSIONS =============== //
 // ========================================= //
 export const PERMISSIONS = {
