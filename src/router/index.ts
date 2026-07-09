@@ -1,4 +1,4 @@
-import { isAuth, restoreSession } from '@/auth'
+import { isAuth, refreshToken, restoreSession } from '@/auth'
 import HomePage from '@/pages/HomePage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
 import SignupPage from '@/pages/SignupPage.vue'

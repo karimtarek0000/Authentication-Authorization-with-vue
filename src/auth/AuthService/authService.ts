@@ -52,10 +52,11 @@ export const useAuthService = () => {
 
   const logout = () => {
     initialData()
-    router.replace('/login')
   }
 
   const refreshToken = async () => {
+    if (!hasAuth.value) return null
+
     if (refreshPromise) return refreshPromise
 
     refreshPromise = (async () => {
@@ -83,7 +84,7 @@ export const useAuthService = () => {
       permissions.value = data.permissions
       isAuth.value = true
     } catch (error) {
-      // logout()
+      logout()
       throw handleError(error as AxiosError)
     }
   }
@@ -94,18 +95,16 @@ export const useAuthService = () => {
     if (restorePromise) return restorePromise
 
     restorePromise = (async () => {
-      const token = await refreshToken()
+      try {
+        const token = await refreshToken()
 
-      if (!token) return null
+        if (!token) return null
 
-      await restoreUserInfo()
+        await restoreUserInfo()
+      } catch {}
     })()
 
-    try {
-      return await restorePromise
-    } finally {
-      restorePromise = null
-    }
+    return restorePromise
   }
 
   return { login, refreshToken, restoreSession }
