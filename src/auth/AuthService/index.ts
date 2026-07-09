@@ -1,4 +1,4 @@
-import { api, handleError, LOGIN, REFRESH_TOKEN, type Permission } from '@/auth'
+import { api, handleError, LOGIN, PROFILE, REFRESH_TOKEN, type Permission } from '@/auth'
 import router from '@/router'
 import type { AxiosError } from 'axios'
 import axios from 'axios'
@@ -88,7 +88,7 @@ export const useAuthService = () => {
 
   const restoreUserInfo = async () => {
     try {
-      const { data } = await api.get('/me')
+      const { data } = await api.get(PROFILE)
 
       Object.assign(userAuth, {
         role: data.role,
