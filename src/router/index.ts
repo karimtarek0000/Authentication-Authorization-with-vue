@@ -1,4 +1,5 @@
 import { restoreSession, userAuth } from '@/auth'
+import AboutPage from '@/pages/AboutPage.vue'
 import HomePage from '@/pages/HomePage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
 import SignupPage from '@/pages/SignupPage.vue'
@@ -13,6 +14,11 @@ const routes = [
     path: '/home',
     name: 'home',
     component: HomePage,
+  },
+  {
+    path: '/about',
+    name: 'about',
+    component: AboutPage,
   },
   {
     path: '/login',
@@ -31,19 +37,19 @@ const router = createRouter({
   routes,
 })
 
-const protectedRoutes = ['/', '/home']
+const publicRoutes = ['/about', '/login']
 
 router.beforeEach(async (to, _, next) => {
   await restoreSession()
 
   const isAuth = userAuth.isAuth
 
-  if (to.path === '/login' && isAuth) {
-    return next('/')
+  if (!publicRoutes.includes(to.path) && !isAuth) {
+    return next('/login')
   }
 
-  if (protectedRoutes.includes(to.path) && !isAuth) {
-    return next('/login')
+  if (to.path === '/login' && isAuth) {
+    return next('/')
   }
 
   next()
