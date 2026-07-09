@@ -1,4 +1,4 @@
-import { api, handleError, LOGIN, REFRESH_TOKEN } from '@/auth'
+import { api, handleError, LOGIN, REFRESH_TOKEN, type Permission } from '@/auth'
 import router from '@/router'
 import type { AxiosError } from 'axios'
 import axios from 'axios'
@@ -12,7 +12,7 @@ interface Login {
 interface IUserAuth {
   accessToken: string
   userInfo: { id: string; name: string; email: string }
-  permissions: string[]
+  permissions: Permission[]
   role: string
   isAuth: boolean
   hasAuth: string | null

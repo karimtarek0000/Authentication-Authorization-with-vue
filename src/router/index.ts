@@ -1,4 +1,4 @@
-import { restoreSession, userAuth } from '@/auth'
+import { checkPermissions, restoreSession, userAuth } from '@/auth'
 import AboutPage from '@/pages/AboutPage.vue'
 import HomePage from '@/pages/HomePage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
@@ -25,14 +25,17 @@ const routes = [
     path: '/test',
     name: 'test',
     component: TestPage,
-    // beforeEnter: async (to, from, next) => {
-    //   const permission = false
-    //   if (!permission) {
-    //     next('/')
-    //   }
+    beforeEnter: async (to, from, next) => {
+      const hasPermissions = checkPermissions(userAuth.permissions, {
+        permission: 'edit_testing',
+      })
 
-    //   next()
-    // },
+      if (!hasPermissions) {
+        next('/')
+      }
+
+      next()
+    },
   },
   {
     path: '/login',
