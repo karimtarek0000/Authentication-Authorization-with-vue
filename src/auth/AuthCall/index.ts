@@ -1,4 +1,4 @@
-import { accessToken, refreshToken } from '@/auth'
+import { refreshToken, userAuth } from '@/auth'
 import axios from 'axios'
 
 let navigationController = new AbortController()
@@ -27,7 +27,7 @@ api.interceptors.request.use(
     //   requestConfig.signal = navigationController.signal
     // }
 
-    const token = accessToken.value
+    const token = userAuth.accessToken
     if (token) {
       requestConfig.headers.Authorization = `Bearer ${token}`
     }

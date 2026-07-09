@@ -1,4 +1,4 @@
-import { isAuth, refreshToken, restoreSession } from '@/auth'
+import { restoreSession, userAuth } from '@/auth'
 import HomePage from '@/pages/HomePage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
 import SignupPage from '@/pages/SignupPage.vue'
@@ -36,13 +36,13 @@ const protectedRoutes = ['/', '/home']
 router.beforeEach(async (to, _, next) => {
   await restoreSession()
 
-  const userAuth = isAuth.value
+  const isAuth = userAuth.isAuth
 
-  if (to.path === '/login' && userAuth) {
+  if (to.path === '/login' && isAuth) {
     return next('/')
   }
 
-  if (protectedRoutes.includes(to.path) && !userAuth) {
+  if (protectedRoutes.includes(to.path) && !isAuth) {
     return next('/login')
   }
 
