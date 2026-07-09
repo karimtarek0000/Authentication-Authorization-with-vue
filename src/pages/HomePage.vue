@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { api, userAuth } from '@/auth'
+import { api, logout, userAuth } from '@/auth'
 
 const getSomeData = async () => {
   try {
@@ -19,5 +19,5 @@ const getSomeData = async () => {
   </pre>
 
   <button @click="getSomeData">Get the data</button>
-  <button>logout</button>
+  <button @click="logout">logout</button>
 </template>

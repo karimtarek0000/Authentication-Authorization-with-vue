@@ -62,6 +62,7 @@ export const useAuthService = () => {
 
   const logout = () => {
     resetUserAuth()
+    location.reload()
   }
 
   const refreshToken = async () => {
@@ -119,5 +120,5 @@ export const useAuthService = () => {
     return restorePromise
   }
 
-  return { login, refreshToken, restoreSession }
+  return { login, logout, refreshToken, restoreSession }
 }

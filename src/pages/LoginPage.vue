@@ -1,13 +1,21 @@
 <script setup lang="ts">
 import { login } from '@/auth'
 import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
 
+const { replace } = useRouter()
+const { query } = useRoute()
 const email = ref('')
 const password = ref('')
 
 const submit = async () => {
-  login({ email: email.value, password: password.value })
+  try {
+    await login({ email: email.value, password: password.value })
+
+    if (query?.page) {
+      replace(query?.page as string)
+    }
+  } catch (error) {}
 }
 </script>
 

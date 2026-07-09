@@ -2,8 +2,8 @@ export * from './AuthCall'
 export * from './config'
 export * from './utils'
 
-import { userAuth, useAuthService } from './AuthService'
+import { useAuthService, userAuth } from './AuthService'
 
-const { login, refreshToken, restoreSession } = useAuthService()
+const { login, logout, refreshToken, restoreSession } = useAuthService()
 
-export { userAuth, login, refreshToken, restoreSession }
+export { login, logout, refreshToken, restoreSession, userAuth }

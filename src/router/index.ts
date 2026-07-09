@@ -3,6 +3,7 @@ import AboutPage from '@/pages/AboutPage.vue'
 import HomePage from '@/pages/HomePage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
 import SignupPage from '@/pages/SignupPage.vue'
+import TestPage from '@/pages/TestPage.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
@@ -19,6 +20,19 @@ const routes = [
     path: '/about',
     name: 'about',
     component: AboutPage,
+  },
+  {
+    path: '/test',
+    name: 'test',
+    component: TestPage,
+    // beforeEnter: async (to, from, next) => {
+    //   const permission = false
+    //   if (!permission) {
+    //     next('/')
+    //   }
+
+    //   next()
+    // },
   },
   {
     path: '/login',
@@ -45,7 +59,7 @@ router.beforeEach(async (to, _, next) => {
   const isAuth = userAuth.isAuth
 
   if (!publicRoutes.includes(to.path) && !isAuth) {
-    return next('/login')
+    return next(`/login?page=${to.path}`)
   }
 
   if (to.path === '/login' && isAuth) {
