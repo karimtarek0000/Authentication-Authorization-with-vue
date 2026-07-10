@@ -1,6 +1,7 @@
 import { abortAllApiRequests, aboutGuard, restoreSession, testGuard, userAuth } from '@/auth'
 import AboutPage from '@/pages/AboutPage.vue'
 import HomePage from '@/pages/HomePage.vue'
+import LandingPage from '@/pages/LandingPage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
 import OAuthCallbackPage from '@/pages/OAuthCallbackPage.vue'
 import SignupPage from '@/pages/SignupPage.vue'
@@ -16,25 +17,39 @@ const routes: RouteRecordRaw[] = [
     path: '/home',
     name: 'home',
     component: HomePage,
+    meta: {
+      protectRoute: true,
+    },
+  },
+  {
+    path: '/landing',
+    name: 'landing',
+    component: LandingPage,
   },
   {
     path: '/about',
     name: 'about',
     component: AboutPage,
     beforeEnter: aboutGuard,
+    meta: {
+      protectRoute: true,
+    },
   },
   {
     path: '/test',
     name: 'test',
     component: TestPage,
     beforeEnter: testGuard,
+    meta: {
+      protectRoute: true,
+    },
   },
   {
     path: '/login',
     name: 'login',
     component: LoginPage,
     meta: {
-      publicRoute: true,
+      authRoute: true,
     },
   },
   {
@@ -42,7 +57,7 @@ const routes: RouteRecordRaw[] = [
     name: 'signup',
     component: SignupPage,
     meta: {
-      publicRoute: true,
+      authRoute: true,
     },
   },
   {
@@ -50,7 +65,7 @@ const routes: RouteRecordRaw[] = [
     name: 'oauth-callback',
     component: OAuthCallbackPage,
     meta: {
-      publicRoute: true,
+      authRoute: true,
     },
   },
 ]
@@ -64,18 +79,19 @@ router.beforeEach(async (to, from, next) => {
   await restoreSession()
 
   const isAuth = userAuth.isAuth
-  const isPublic = to.matched[0].meta.publicRoute
+  const isAuthRoute = to.matched[0].meta.authRoute
+  const protectedRoute = to.matched[0].meta.protectRoute
 
   // Abort requests immeditely if user changes the page
   if (to.path !== from.path) {
     abortAllApiRequests()
   }
 
-  if (!isPublic && !isAuth) {
+  if (protectedRoute && !isAuth) {
     return next(`/login?page=${to.path}`)
   }
 
-  if (isPublic && isAuth) {
+  if (isAuthRoute && isAuth) {
     return next('/')
   }
 
