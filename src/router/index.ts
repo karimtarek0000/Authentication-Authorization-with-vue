@@ -1,14 +1,15 @@
 import { abortAllApiRequests, aboutGuard, restoreSession, testGuard, userAuth } from '@/auth'
-import Auth from '@/layouts/Auth.vue'
-import Dashboard from '@/layouts/Dashboard.vue'
-import AboutPage from '@/pages/AboutPage.vue'
-import HomePage from '@/pages/HomePage.vue'
-import LandingPage from '@/pages/LandingPage.vue'
-import LoginPage from '@/pages/LoginPage.vue'
-import NotFound from '@/pages/NotFound.vue'
-import OAuthCallbackPage from '@/pages/OAuthCallbackPage.vue'
-import SignupPage from '@/pages/SignupPage.vue'
-import TestPage from '@/pages/TestPage.vue'
+import { Auth, Dashboard } from '@/layouts'
+import {
+  AboutPage,
+  HomePage,
+  LandingPage,
+  LoginPage,
+  NotFound,
+  OAuthCallbackPage,
+  SignupPage,
+  TestPage,
+} from '@/pages'
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
 const routes: RouteRecordRaw[] = [
