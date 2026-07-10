@@ -1,4 +1,4 @@
-type AuthEvent = 'logout'
+import type { AuthEvent } from '@/auth'
 
 const channel = new BroadcastChannel('auth')
 
