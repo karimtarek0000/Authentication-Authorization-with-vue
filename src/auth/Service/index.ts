@@ -53,7 +53,7 @@ export const useAuthService = () => {
 
       localStorage.setItem('hasAuth', 'true')
 
-      router.replace('/home')
+      router.replace('/')
     } catch (error) {
       throw handleError(error as AxiosError)
     }
@@ -77,7 +77,7 @@ export const useAuthService = () => {
 
       localStorage.setItem('hasAuth', 'true')
 
-      router.replace('/home')
+      router.replace('/')
     } catch (error) {
       throw handleError(error as AxiosError)
     }

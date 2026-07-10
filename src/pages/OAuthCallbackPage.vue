@@ -22,13 +22,11 @@ onMounted(async () => {
     return
   }
 
-  console.log('Code: ', code)
-
-  // try {
-  //   await loginWithOAuth(provider, code)
-  // } catch {
-  //   errorMessage.value = 'We could not sign you in. Please try again.'
-  // }
+  try {
+    await loginWithOAuth(provider, code)
+  } catch {
+    errorMessage.value = 'We could not sign you in. Please try again.'
+  }
 })
 </script>
 
