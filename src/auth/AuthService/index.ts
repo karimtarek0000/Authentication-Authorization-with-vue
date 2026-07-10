@@ -10,12 +10,12 @@ const initialData = {
   permissions: [],
   role: '',
   isAuth: false,
-  hasAuth: sessionStorage.getItem('hasAuth'),
+  hasAuth: localStorage.getItem('hasAuth'),
 }
 
 const resetUserAuth = () => {
   Object.assign(userAuth, initialData)
-  sessionStorage.removeItem('hasAuth')
+  localStorage.removeItem('hasAuth')
 }
 
 export const userAuth = reactive<IUserAuth>(initialData)
@@ -38,7 +38,7 @@ export const useAuthService = () => {
         isAuth: true,
       })
 
-      sessionStorage.setItem('hasAuth', 'true')
+      localStorage.setItem('hasAuth', 'true')
 
       router.replace('/home')
     } catch (error) {
