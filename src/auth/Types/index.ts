@@ -15,6 +15,8 @@ export interface IUserAuth {
   hasAuth: string | null
 }
 
+export type OAuthProvider = 'google' | 'github'
+
 // ================================== //
 // ============= SYNC =============== //
 // ================================== //

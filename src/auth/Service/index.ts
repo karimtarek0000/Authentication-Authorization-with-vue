@@ -1,12 +1,16 @@
 import {
   api,
   authChannel,
+  getOAuthRedirectURL,
   handleError,
   LOGIN,
+  OAUTH_GITHUB,
+  OAUTH_GOOGLE,
   PROFILE,
   REFRESH_TOKEN,
   type IUserAuth,
   type Login,
+  type OAuthProvider,
 } from '@/auth'
 import router from '@/router'
 import type { AxiosError } from 'axios'
@@ -38,6 +42,30 @@ export const useAuthService = () => {
       const {
         data: { id, name, ...info },
       } = await api.post(LOGIN, { email, password })
+
+      Object.assign(userAuth, {
+        accessToken: info.accessToken,
+        role: info.role,
+        userInfo: { id, name, email },
+        permissions: info.permissions,
+        isAuth: true,
+      })
+
+      localStorage.setItem('hasAuth', 'true')
+
+      router.replace('/home')
+    } catch (error) {
+      throw handleError(error as AxiosError)
+    }
+  }
+
+  const loginWithOAuth = async (provider: OAuthProvider, code: string) => {
+    try {
+      const endpoint = provider === 'google' ? OAUTH_GOOGLE : OAUTH_GITHUB
+
+      const {
+        data: { id, name, email, ...info },
+      } = await api.post(endpoint, { code, redirectURL: getOAuthRedirectURL(provider) })
 
       Object.assign(userAuth, {
         accessToken: info.accessToken,
@@ -116,5 +144,5 @@ export const useAuthService = () => {
     return restorePromise
   }
 
-  return { login, logout, refreshToken, restoreSession }
+  return { login, loginWithOAuth, logout, refreshToken, restoreSession }
 }

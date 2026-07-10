@@ -42,6 +42,7 @@ const headingSection = $checkPermissions({
   </CanView>
 
   <RouterLink to="/test">Go to test page</RouterLink>
+  <!-- <RouterLink to="/about">Go to about page</RouterLink> -->
   <button @click="getSomeData">Get the data</button>
   <button @click="logout">logout</button>
 </template>
