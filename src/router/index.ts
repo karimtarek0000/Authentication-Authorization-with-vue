@@ -1,4 +1,4 @@
-import { aboutGuard, restoreSession, testGuard, userAuth } from '@/auth'
+import { abortAllApiRequests, aboutGuard, restoreSession, testGuard, userAuth } from '@/auth'
 import AboutPage from '@/pages/AboutPage.vue'
 import HomePage from '@/pages/HomePage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
@@ -47,10 +47,15 @@ const router = createRouter({
 
 const publicRoutes = ['/login', '/signup']
 
-router.beforeEach(async (to, _, next) => {
+router.beforeEach(async (to, from, next) => {
   await restoreSession()
 
   const isAuth = userAuth.isAuth
+
+  // Abort requests immeditely if user changes the page
+  if (to.path !== from.path) {
+    abortAllApiRequests()
+  }
 
   if (!publicRoutes.includes(to.path) && !isAuth) {
     return next(`/login?page=${to.path}`)

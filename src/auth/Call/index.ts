@@ -1,5 +1,5 @@
 import { refreshToken, userAuth } from '@/auth'
-import axios from 'axios'
+import axios, { type InternalAxiosRequestConfig } from 'axios'
 
 let navigationController = new AbortController()
 
@@ -19,13 +19,12 @@ export const api = axios.create({
 // Request interceptor
 api.interceptors.request.use(
   config => {
-    const requestConfig = config
-    // const requestConfig = config as InternalAxiosRequestConfig
+    const requestConfig = config as InternalAxiosRequestConfig
 
     // Attach the current navigation signal to every request unless custom signal exists.
-    // if (!requestConfig.signal) {
-    //   requestConfig.signal = navigationController.signal
-    // }
+    if (!requestConfig.signal) {
+      requestConfig.signal = navigationController.signal
+    }
 
     const token = userAuth.accessToken
     if (token) {

@@ -5,6 +5,13 @@ const getSomeData = async () => {
   try {
     await api.get('/data')
     await api.get('/new-data')
+    await api.get('/new-data')
+    await api.get('/data')
+    await api.get('/new-data')
+    await api.get('/data')
+    await api.get('/new-data')
+    await api.get('/data')
+    await api.get('/new-data')
   } catch (error) {}
 }
 
@@ -41,6 +48,7 @@ const headingSection = $checkPermissions({
     </p>
   </CanView>
 
+  <RouterLink to="/test">Go to test page</RouterLink>
   <button @click="getSomeData">Get the data</button>
   <button @click="logout">logout</button>
 </template>
