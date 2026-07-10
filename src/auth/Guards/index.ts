@@ -1,6 +1,6 @@
 import { $checkPermissions } from '@/auth'
 
-export const aboutLoader = async (_: any, __: any, next: any) => {
+export const aboutGuard = async (_: any, __: any, next: any) => {
   const hasPermissions = $checkPermissions({
     permission: 'edit_testing',
   })
@@ -12,7 +12,7 @@ export const aboutLoader = async (_: any, __: any, next: any) => {
   next()
 }
 
-export const testLoader = async (_: any, __: any, next: any) => {
+export const testGuard = async (_: any, __: any, next: any) => {
   const hasPermissions = $checkPermissions({
     anyOf: ['edit_profile', 'edit_testing'],
   })

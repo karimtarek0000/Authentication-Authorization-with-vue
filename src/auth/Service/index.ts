@@ -1,4 +1,13 @@
-import { api, handleError, LOGIN, PROFILE, REFRESH_TOKEN, type IUserAuth, type Login } from '@/auth'
+import {
+  api,
+  authChannel,
+  handleError,
+  LOGIN,
+  PROFILE,
+  REFRESH_TOKEN,
+  type IUserAuth,
+  type Login,
+} from '@/auth'
 import router from '@/router'
 import type { AxiosError } from 'axios'
 import axios from 'axios'
@@ -48,6 +57,7 @@ export const useAuthService = () => {
 
   const logout = () => {
     resetUserAuth()
+    authChannel.broadcast('logout')
     location.reload()
   }
 

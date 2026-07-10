@@ -1,12 +1,13 @@
-export * from './AuthCall'
-export * from './config'
-export * from './Loaders'
+export * from './Call'
+export * from './Config'
+export * from './Guards'
 export * from './Permissions'
+export * from './Sync'
 export * from './Types'
-export * from './utils'
+export * from './Utils'
 import CanView from './Components/CanView.vue'
 
-import { useAuthService, userAuth } from './AuthService'
+import { useAuthService, userAuth } from './Service/index.ts'
 
 const { login, logout, refreshToken, restoreSession } = useAuthService()
 

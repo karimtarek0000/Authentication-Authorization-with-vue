@@ -1,4 +1,4 @@
-import { aboutLoader, restoreSession, testLoader, userAuth } from '@/auth'
+import { aboutGuard, restoreSession, testGuard, userAuth } from '@/auth'
 import AboutPage from '@/pages/AboutPage.vue'
 import HomePage from '@/pages/HomePage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
@@ -20,13 +20,13 @@ const routes: RouteRecordRaw[] = [
     path: '/about',
     name: 'about',
     component: AboutPage,
-    beforeEnter: aboutLoader,
+    beforeEnter: aboutGuard,
   },
   {
     path: '/test',
     name: 'test',
     component: TestPage,
-    beforeEnter: testLoader,
+    beforeEnter: testGuard,
   },
   {
     path: '/login',
