@@ -2,7 +2,7 @@ import { logout, userAuth } from '@/auth'
 import { onScopeDispose, ref, type Ref } from 'vue'
 
 const IDLE_LIMIT = 15 * 60 * 1000 // 15 minutes
-const THROTTLE_INTERVAL = 5000
+const THROTTLE_INTERVAL = 10000
 const ACTIVITY_EVENTS: string[] = ['keydown', 'click', 'scroll', 'touchstart', 'mousemove']
 
 type ResetTimerFn = () => void
