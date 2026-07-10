@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { authChannel } from '@/auth'
-import { onMounted } from 'vue'
+import { authChannel, useIdle, userAuth } from '@/auth'
+import { onMounted, watch } from 'vue'
+
+const { setIdle } = useIdle()
 
 onMounted(() => {
   authChannel.subscribe(event => {
@@ -9,6 +11,11 @@ onMounted(() => {
     }
   })
 })
+
+watch(
+  () => userAuth.isAuth,
+  () => setIdle(),
+)
 </script>
 
 <template>
