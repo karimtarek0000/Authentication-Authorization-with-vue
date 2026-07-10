@@ -33,16 +33,25 @@ const routes: RouteRecordRaw[] = [
     path: '/login',
     name: 'login',
     component: LoginPage,
+    meta: {
+      publicRoute: true,
+    },
   },
   {
     path: '/signup',
     name: 'signup',
     component: SignupPage,
+    meta: {
+      publicRoute: true,
+    },
   },
   {
     path: '/auth/callback/:provider',
     name: 'oauth-callback',
     component: OAuthCallbackPage,
+    meta: {
+      publicRoute: true,
+    },
   },
 ]
 
@@ -51,13 +60,11 @@ const router = createRouter({
   routes,
 })
 
-const publicRoutes = ['/login', '/signup']
-
 router.beforeEach(async (to, from, next) => {
   await restoreSession()
 
   const isAuth = userAuth.isAuth
-  const isPublic = publicRoutes.includes(to.path) || to.name === 'oauth-callback'
+  const isPublic = to.matched[0].meta.publicRoute
 
   // Abort requests immeditely if user changes the page
   if (to.path !== from.path) {
@@ -68,7 +75,7 @@ router.beforeEach(async (to, from, next) => {
     return next(`/login?page=${to.path}`)
   }
 
-  if (isPublic && isAuth && to.name === 'oauth-callback') {
+  if (isPublic && isAuth) {
     return next('/')
   }
 
