@@ -1,8 +1,10 @@
 import { abortAllApiRequests, aboutGuard, restoreSession, testGuard, userAuth } from '@/auth'
+import Dashboard from '@/layouts/Dashboard.vue'
 import AboutPage from '@/pages/AboutPage.vue'
 import HomePage from '@/pages/HomePage.vue'
 import LandingPage from '@/pages/LandingPage.vue'
 import LoginPage from '@/pages/LoginPage.vue'
+import NotFound from '@/pages/NotFound.vue'
 import OAuthCallbackPage from '@/pages/OAuthCallbackPage.vue'
 import SignupPage from '@/pages/SignupPage.vue'
 import TestPage from '@/pages/TestPage.vue'
@@ -10,39 +12,40 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 
 const routes: RouteRecordRaw[] = [
   {
-    path: '/',
-    redirect: '/home',
-  },
-  {
-    path: '/home',
-    name: 'home',
-    component: HomePage,
-    meta: {
-      protectRoute: true,
-    },
-  },
-  {
     path: '/landing',
     name: 'landing',
     component: LandingPage,
   },
   {
-    path: '/about',
-    name: 'about',
-    component: AboutPage,
-    beforeEnter: aboutGuard,
-    meta: {
-      protectRoute: true,
-    },
+    path: '/',
+    redirect: '/dashboard',
   },
   {
-    path: '/test',
-    name: 'test',
-    component: TestPage,
-    beforeEnter: testGuard,
+    path: '/dashboard',
+    name: 'dashboard',
+    component: Dashboard,
     meta: {
       protectRoute: true,
     },
+    children: [
+      {
+        path: '',
+        name: 'home',
+        component: HomePage,
+      },
+      {
+        path: 'about',
+        name: 'about',
+        component: AboutPage,
+        beforeEnter: aboutGuard,
+      },
+      {
+        path: 'test',
+        name: 'test',
+        component: TestPage,
+        beforeEnter: testGuard,
+      },
+    ],
   },
   {
     path: '/login',
@@ -68,6 +71,10 @@ const routes: RouteRecordRaw[] = [
       authRoute: true,
     },
   },
+  {
+    path: '/:pathMatch(.*)*',
+    component: NotFound,
+  },
 ]
 
 const router = createRouter({
@@ -81,6 +88,7 @@ router.beforeEach(async (to, from, next) => {
   const isAuth = userAuth.isAuth
   const isAuthRoute = to.matched[0].meta.authRoute
   const protectedRoute = to.matched[0].meta.protectRoute
+  console.log(to.matched[0].meta)
 
   // Abort requests immeditely if user changes the page
   if (to.path !== from.path) {
