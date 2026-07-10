@@ -1,7 +1,7 @@
-import type { Permission, PermissionRequirement } from '@/auth'
+import { userAuth, type Permission, type PermissionRequirement } from '@/auth'
 
 // You can now use this utility for `Check Permissions`
-export const checkPermissions = (
+const checkPermissions = (
   userPermissions: Permission[],
   permissionRequirement: PermissionRequirement,
 ): boolean => {
@@ -18,16 +18,20 @@ export const checkPermissions = (
 }
 
 // Check if user has a specific permission
-export function $hasPermission(userPermissions: Permission[], required: Permission): boolean {
+function $hasPermission(userPermissions: Permission[], required: Permission): boolean {
   return userPermissions.includes(required)
 }
 
 // Check if user has ANY of the given permissions
-export function $hasAnyPermission(userPermissions: Permission[], required: Permission[]): boolean {
+function $hasAnyPermission(userPermissions: Permission[], required: Permission[]): boolean {
   return required.some(p => userPermissions.includes(p))
 }
 
 // Check if user has ALL of the given permissions
-export function $hasAllPermissions(userPermissions: Permission[], required: Permission[]): boolean {
+function $hasAllPermissions(userPermissions: Permission[], required: Permission[]): boolean {
   return required.every(p => userPermissions.includes(p))
+}
+
+export const $checkPermissions = (permissionRequirement: PermissionRequirement) => {
+  return checkPermissions(userAuth.permissions, permissionRequirement)
 }

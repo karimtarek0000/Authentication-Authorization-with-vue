@@ -45,7 +45,7 @@ const router = createRouter({
   routes,
 })
 
-const publicRoutes = ['/login']
+const publicRoutes = ['/login', '/signup']
 
 router.beforeEach(async (to, _, next) => {
   await restoreSession()
@@ -56,7 +56,7 @@ router.beforeEach(async (to, _, next) => {
     return next(`/login?page=${to.path}`)
   }
 
-  if (to.path === '/login' && isAuth) {
+  if (publicRoutes.includes(to.path) && isAuth) {
     return next('/')
   }
 

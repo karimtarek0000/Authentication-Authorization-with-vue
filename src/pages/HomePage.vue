@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { api, CanView, checkPermissions, logout, userAuth } from '@/auth'
+import { $checkPermissions, api, CanView, logout, userAuth } from '@/auth'
 
 const getSomeData = async () => {
   try {
@@ -8,8 +8,8 @@ const getSomeData = async () => {
   } catch (error) {}
 }
 
-const paragraphSection = checkPermissions(userAuth.permissions, { permission: 'edit_testing' })
-const headingSection = checkPermissions(userAuth.permissions, {
+const paragraphSection = $checkPermissions({ permission: 'edit_testing' })
+const headingSection = $checkPermissions({
   allOf: ['edit_profile', 'manage_users'],
 })
 </script>
