@@ -31,7 +31,7 @@ const submit = () => {
     </form>
     <p>
       Already have an account?
-      <RouterLink to="/login">Log in</RouterLink>
+      <RouterLink :to="{ name: 'login' }">Log in</RouterLink>
     </p>
   </main>
 </template>

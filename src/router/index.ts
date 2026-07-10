@@ -1,4 +1,5 @@
 import { abortAllApiRequests, aboutGuard, restoreSession, testGuard, userAuth } from '@/auth'
+import Auth from '@/layouts/Auth.vue'
 import Dashboard from '@/layouts/Dashboard.vue'
 import AboutPage from '@/pages/AboutPage.vue'
 import HomePage from '@/pages/HomePage.vue'
@@ -48,28 +49,28 @@ const routes: RouteRecordRaw[] = [
     ],
   },
   {
-    path: '/login',
-    name: 'login',
-    component: LoginPage,
+    path: '/auth',
+    component: Auth,
     meta: {
       authRoute: true,
     },
-  },
-  {
-    path: '/signup',
-    name: 'signup',
-    component: SignupPage,
-    meta: {
-      authRoute: true,
-    },
-  },
-  {
-    path: '/auth/callback/:provider',
-    name: 'oauth-callback',
-    component: OAuthCallbackPage,
-    meta: {
-      authRoute: true,
-    },
+    children: [
+      {
+        path: 'login',
+        name: 'login',
+        component: LoginPage,
+      },
+      {
+        path: 'signup',
+        name: 'signup',
+        component: SignupPage,
+      },
+      {
+        path: 'callback/:provider',
+        name: 'oauth-callback',
+        component: OAuthCallbackPage,
+      },
+    ],
   },
   {
     path: '/:pathMatch(.*)*',
@@ -86,17 +87,17 @@ router.beforeEach(async (to, from, next) => {
   await restoreSession()
 
   const isAuth = userAuth.isAuth
+
   const isAuthRoute = to.matched[0].meta.authRoute
-  const protectedRoute = to.matched[0].meta.protectRoute
-  console.log(to.matched[0].meta)
+  const isProtectedRoute = to.matched[0].meta.protectRoute
 
   // Abort requests immeditely if user changes the page
   if (to.path !== from.path) {
     abortAllApiRequests()
   }
 
-  if (protectedRoute && !isAuth) {
-    return next(`/login?page=${to.path}`)
+  if (isProtectedRoute && !isAuth) {
+    return next(`/auth/login?page=${to.path}`)
   }
 
   if (isAuthRoute && isAuth) {

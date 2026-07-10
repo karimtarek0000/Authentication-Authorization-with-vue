@@ -35,7 +35,7 @@ onMounted(async () => {
     <p v-if="!errorMessage">Signing you in…</p>
     <template v-else>
       <p>{{ errorMessage }}</p>
-      <RouterLink to="/login">Back to login</RouterLink>
+      <RouterLink :to="{ name: 'login' }">Back to login</RouterLink>
     </template>
   </main>
 </template>
