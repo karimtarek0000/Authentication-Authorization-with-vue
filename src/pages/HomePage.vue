@@ -5,13 +5,6 @@ const getSomeData = async () => {
   try {
     await api.get('/data')
     await api.get('/new-data')
-    await api.get('/new-data')
-    await api.get('/data')
-    await api.get('/new-data')
-    await api.get('/data')
-    await api.get('/new-data')
-    await api.get('/data')
-    await api.get('/new-data')
   } catch (error) {}
 }
 
