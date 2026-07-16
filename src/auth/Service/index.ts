@@ -8,6 +8,7 @@ import {
   OAUTH_GOOGLE,
   PROFILE,
   REFRESH_TOKEN,
+  useIdle,
   type IUserAuth,
   type Login,
   type OAuthProvider,
@@ -15,7 +16,7 @@ import {
 import router from '@/router'
 import type { AxiosError } from 'axios'
 import axios from 'axios'
-import { reactive } from 'vue'
+import { reactive, watch } from 'vue'
 
 const initialData = {
   accessToken: '',
@@ -37,23 +38,13 @@ let restorePromise: Promise<null | undefined> | null = null
 let refreshPromise: Promise<null | undefined> | null = null
 
 export const useAuthService = () => {
+  const { setIdle } = useIdle()
+
   const login = async ({ email, password }: Login) => {
     try {
-      const {
-        data: { id, name, ...info },
-      } = await api.post(LOGIN, { email, password })
+      const { data } = await api.post(LOGIN, { email, password })
 
-      Object.assign(userAuth, {
-        accessToken: info.accessToken,
-        role: info.role,
-        userInfo: { id, name, email },
-        permissions: info.permissions,
-        isAuth: true,
-      })
-
-      localStorage.setItem('hasAuth', 'true')
-
-      router.replace('/')
+      setAuthData(data)
     } catch (error) {
       throw handleError(error as AxiosError)
     }
@@ -63,24 +54,31 @@ export const useAuthService = () => {
     try {
       const endpoint = provider === 'google' ? OAUTH_GOOGLE : OAUTH_GITHUB
 
-      const {
-        data: { id, name, email, ...info },
-      } = await api.post(endpoint, { code, redirectURL: getOAuthRedirectURL(provider) })
-
-      Object.assign(userAuth, {
-        accessToken: info.accessToken,
-        role: info.role,
-        userInfo: { id, name, email },
-        permissions: info.permissions,
-        isAuth: true,
+      const { data } = await api.post(endpoint, {
+        code,
+        redirectURL: getOAuthRedirectURL(provider),
       })
 
-      localStorage.setItem('hasAuth', 'true')
-
-      router.replace('/')
+      setAuthData(data)
     } catch (error) {
       throw handleError(error as AxiosError)
     }
+  }
+
+  const setAuthData = (data: any) => {
+    const { id, name, email, ...info } = data
+
+    Object.assign(userAuth, {
+      accessToken: info.accessToken,
+      role: info.role,
+      userInfo: { id, name, email },
+      permissions: info.permissions,
+      isAuth: true,
+    })
+
+    localStorage.setItem('hasAuth', 'true')
+
+    router.replace('/')
   }
 
   const logout = () => {
@@ -143,6 +141,11 @@ export const useAuthService = () => {
 
     return restorePromise
   }
+
+  watch(
+    () => userAuth.isAuth,
+    () => setIdle(),
+  )
 
   return { login, loginWithOAuth, logout, refreshToken, restoreSession }
 }
