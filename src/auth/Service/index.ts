@@ -4,8 +4,7 @@ import {
   getOAuthRedirectURL,
   handleError,
   LOGIN,
-  OAUTH_GITHUB,
-  OAUTH_GOOGLE,
+  OAUTH_PLATFORM,
   PROFILE,
   REFRESH_TOKEN,
   useIdle,
@@ -18,7 +17,10 @@ import type { AxiosError } from 'axios'
 import axios from 'axios'
 import { reactive, watch } from 'vue'
 
-const initialData = {
+let restorePromise: Promise<null | undefined> | null = null
+let refreshPromise: Promise<null | undefined> | null = null
+
+const initialData: IUserAuth = {
   accessToken: '',
   userInfo: { id: '', name: '', email: '' },
   permissions: [],
@@ -33,9 +35,6 @@ const resetUserAuth = () => {
 }
 
 export const userAuth = reactive<IUserAuth>(initialData)
-
-let restorePromise: Promise<null | undefined> | null = null
-let refreshPromise: Promise<null | undefined> | null = null
 
 export const useAuthService = () => {
   const { setIdle } = useIdle()
@@ -52,7 +51,7 @@ export const useAuthService = () => {
 
   const loginWithOAuth = async (provider: OAuthProvider, code: string) => {
     try {
-      const endpoint = provider === 'google' ? OAUTH_GOOGLE : OAUTH_GITHUB
+      const endpoint = OAUTH_PLATFORM[provider]
 
       const { data } = await api.post(endpoint, {
         code,

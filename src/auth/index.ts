@@ -9,7 +9,7 @@ export * from './Types'
 export * from './utils'
 import CanView from './Components/CanView.vue'
 
-import { useAuthService, userAuth } from './Service/index.ts'
+import { useAuthService, userAuth } from './Service'
 
 const { login, loginWithOAuth, logout, refreshToken, restoreSession } = useAuthService()
 
