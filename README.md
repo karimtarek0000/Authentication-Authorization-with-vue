@@ -1,4 +1,4 @@
-# Authentication & Authorization in React
+# Authentication & Authorization in Vue
 
 Authentication lives under [src/auth/](src/auth/) and is exposed as a single barrel module (`src/auth/index.ts`), so the rest of the app imports everything (`login`, `userAuth`, guards, types, …) from `@/auth` without reaching into subfolders. State is held in a plain `reactive()` object (`userAuth`) rather than a Pinia store — there is no auth store module elsewhere in the app.
 
